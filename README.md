@@ -2,7 +2,7 @@ Ansible module which imports an Excel spreadsheet to Ansible facts.
 
 Each sheet is represented by "spreadsheet_{sheet_name}" in Ansible.  The column headers of each row in the sheet are converted to variable names,  and values are populated for each row.  
 
-Example:
+Example facts:
 
 "spreadsheet_Access": [
         {
