@@ -1,4 +1,6 @@
-#!/Library/Frameworks/Python.framework/Versions/2.7/bin/python
+#!/usr/bin/python
+
+####/Library/Frameworks/Python.framework/Versions/2.7/bin/python
 
 
 """
@@ -58,7 +60,6 @@ EXAMPLES = '''
       $ ansible-playbook asante.yml --ask-vault
 
 '''
-
 import openpyxl
 
 # ---------------------------------------------------------------------------
