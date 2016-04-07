@@ -4,7 +4,10 @@ Each sheet is represented by "spreadsheet_{sheet_name}" in Ansible.  The column 
 
 Copy to the library path as specified in your ansible.cfg file.
 
-Requires the openpyxl Python module on the Ansible host.  Install with PIP:
+Requires the openpyxl Python module on the Ansible host.  
+
+Install with PIP:
+
 sudo pip install openpyxl
 
 
