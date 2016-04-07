@@ -1,36 +1,34 @@
 #!/usr/bin/python
 
-####/Library/Frameworks/Python.framework/Versions/2.7/bin/python
-
-
 """
-     Copyright (c) 2015 World Wide Technology, Inc.
+     Copyright (c) 2016 World Wide Technology, Inc.
      All rights reserved.
 
      Revision history:
-     26 Sept 2015  |  1.0 - initial release
+     7 Apr 2016  |  1.0 - initial release
 
 
 """
 
 DOCUMENTATION = '''
 ---
-module: XLS_to_facts.py
-author: Joel W. King, World Wide Technology
+module: xls_to_facts.py
+author: Matt Mullen, World Wide Technology
 version_added: "1.0"
-short_description: Read a XLS file and output Ansible facts
+short_description: Read an Excel .xlsx file and output Ansible facts
 description:
     - Read the XLS file specified and output Ansible facts in the form of a list with each
       element in the list as a dictionary using the column header as the key and the contents
-      of the cell as the value.
+      of the cell as the value. A dictionary is created for each sheet,  in the format spreadsheet_SheetName.
  
 requirements:
-    - None
+    - The openpyxl Python module must be installed on the Ansible host. This can be installed using pip:
+      sudo pip install openpyxl  
 
 options:
     src:
         description:
-            - The XLS formatted input file
+            - The name of the Excel spreadsheet
         required: true
 
     
@@ -38,26 +36,57 @@ options:
 
 EXAMPLES = '''
 
-    Running the module
+    Running the module from the command line:
 
-      ansible  localhost  -m XLS_to_facts -a "src=/tmp/TonyA.XLS"
+      ansible localhost -m xls_to_facts -a src="example.xlsx" -M ~/ansible/library
 
-    In a role configuration, given a group and host entry
+   localhost | SUCCESS => {
+    "ansible_facts": {
+        "spreadsheet_Sheet1": [
+            {
+                "Hostname": "Switch-1",
+                "Mgmt_ip": "10.0.0.1"
+            },
+            {
+                "Hostname": "Switch-2",
+                "Mgmt_ip": "10.0.0.2"
+            },
+            {
+                "Hostname": "Switch-3",
+                "Mgmt_ip": "10.0.0.3"
+            }
+        ],
+        "spreadsheet_Sheet2": [
+            {
+                "Description": "To Spine-1",
+                "Interface": "Ethernet1/1",
+                "Interface_IP": "192.168.100.1/30"
+            },
+            {
+                "Description": "To Spine-2",
+                "Interface": "Ethernet1/2",
+                "Interface_IP": "192.168.100.5/30"
+            }
+        ]
+    },
+    "changed": false
 
-      [asante]
-      NEX-3048-E.sandbox.wwtatc.local  ansible_connection=local ansible_ssh_user=kingjoe hostname=13leafzn02-rp01
+    In a role configuration, given a group and host entry:
+
+      [access_switch]
+      10.0.0.1  ansible_connection=local ansible_ssh_user=ansible_local_user hostname=Switch-1
       #
 
-      $ cat asante.yml
+      $ cat xls_to_facts.yml
       ---
-      - name: Test  Role
-        hosts: asante
+      - name: Test Role to import facts from Excel
+        hosts: access_switch
 
         roles:
-          - {role: excel_nxos, debug: on}
+          - {role: xls_to_facts, debug: on}
 
 
-      $ ansible-playbook asante.yml --ask-vault
+      $ ansible-playbook xls_to_facts.yml --ask-vault
 
 '''
 import openpyxl
