@@ -128,7 +128,6 @@ def main():
     module = AnsibleModule(argument_spec = dict(
              src = dict(required=True)
              ),
-             check_invalid_arguments=False,
              add_file_common_args=True)
 
     code, response = read_xls_dict(module.params["src"])
