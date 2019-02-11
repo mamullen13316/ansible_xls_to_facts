@@ -100,7 +100,7 @@ def read_xls_dict(input_file):
     result = {"ansible_facts":{}}
     spreadsheet = {}
     try:
-        wb = openpyxl.load_workbook(input_file)
+        wb = openpyxl.load_workbook(input_file, data_only=True)
         for sheet in wb.get_sheet_names():
             ansible_sheet_name = 'spreadsheet_' + sheet
             spreadsheet[ansible_sheet_name] = []
